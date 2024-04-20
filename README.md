@@ -1,5 +1,6 @@
 # Save The Nord
 ### [Itch](https://nnra.itch.io/stn)
+![Save The Nord](Project/Unity/Save%20The%20Nord/Assets/Sprites/Icon/1024.png "Save The Nord")
 This game was made for the <b>RAF Challenge 2022</b>.<br/>
 It's purpose was to raise the ecological awareness.<br/>
 Since I don't completely agree with all the points <i>ecology aware</i> people make, I decided to add my own twist.<br/>
