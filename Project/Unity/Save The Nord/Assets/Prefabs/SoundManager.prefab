@@ -1,0 +1,355 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7706136911954697042
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7706136911954697052}
+  - component: {fileID: 7706136911954697043}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7706136911954697052
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7706136911954697042}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7706136911954697043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7706136911954697042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18c72739c52e8f54fa8cd06607998001, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Sounds:
+  - Clip: {fileID: 8300000, guid: 7969d2107bf820e4eae16a324c392d83, type: 3}
+    Mixer: {fileID: -8279807448341902781, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: MenuLoop
+    Loop: 1
+    FadeIn: 1
+    FadeInTime: 5
+    FadeOut: 1
+    FadeOutTime: 0.1
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: f4459c6bab43fe94985133a9ca766807, type: 3}
+    Mixer: {fileID: -8279807448341902781, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: GameLoop
+    Loop: 1
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 1
+    FadeOutTime: 0.5
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: a7ba6a51c9f925b45bd57314c8f089d8, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: Select
+    Loop: 0
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: 84dc1a0c4278848458d7868bc3176158, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: Denied
+    Loop: 0
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 0.75
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: d3bcafe5e70fb974e8027bda6221ebde, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: StoreSelect
+    Loop: 0
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 0.75
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: 21e86f28ac0dff046b24105b8efcdcba, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: Buy
+    Loop: 0
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: 9b0052cc26e7aff4084cc26437de0abd, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: Sell
+    Loop: 0
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: d969b0c81133c20488ac2fbf61e19f20, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: WorkshopSelect
+    Loop: 0
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 0.4
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: 21e86f28ac0dff046b24105b8efcdcba, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: BuyWorker
+    Loop: 0
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 0.5
+    Pitch: 0.75
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: d969b0c81133c20488ac2fbf61e19f20, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: EngageWorkers
+    Loop: 0
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 0.5
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: d1c362f8cb275c244ab12b33f857f267, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: FactorySelect
+    Loop: 0
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 0.3
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: 18a477279247f844d9e116eda4feafda, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: Refine
+    Loop: 0
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 0.75
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: 8a05b019644ebeb44b08340a0e101e99, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: LabSelect
+    Loop: 0
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: 8789ef120bf1da241963d4a61e149b79, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: Fabricate
+    Loop: 0
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 0.75
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: 18492207d86ebf247a3a079d192317f4, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: Shears
+    Loop: 0
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: 18492207d86ebf247a3a079d192317f4, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: WorkersShears
+    Loop: 0
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 0.25
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: 3bc7d9439548d564ba34cd16a8b81010, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: AxeHit
+    Loop: 0
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: 3bc7d9439548d564ba34cd16a8b81010, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: WorkersAxeHit
+    Loop: 0
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 0.25
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: 1c4b4dfa99620ea4ebd5b5656f562a6e, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: LilyHarvest
+    Loop: 0
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: 121c039c86a0a564885fe7ff6c29a76c, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: Plant
+    Loop: 0
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: 8eeae62ede2ccee4cac24812e71f22ba, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: Fertilize
+    Loop: 0
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: ff9f36d1bebc9964986efe1d76287869, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: WaterPlant
+    Loop: 0
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: 558dd82c74a2ec041aa18b8a778db25f, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: PurifyWater
+    Loop: 0
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: 151933fb2a70807478e2ce5fb79fce42, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: PlantDestroyed
+    Loop: 0
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 0.5
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: 66d62ede8f67e3b4cbf1e5fdd6a9566e, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: PlanetMoveTowards
+    Loop: 0
+    FadeIn: 1
+    FadeInTime: 0.15
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 0.25
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: 3d7d0067a51b25e4dabcdefdf3ba88db, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: PlanetMoveAway
+    Loop: 0
+    FadeIn: 1
+    FadeInTime: 0.15
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 0.25
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: bf52d1f633a6eed419bc00bf8d6d608e, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: NordExplosion
+    Loop: 0
+    FadeIn: 0
+    FadeInTime: 0
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+  - Clip: {fileID: 8300000, guid: ac4e4a63efb2a0544956d825946bfadd, type: 3}
+    Mixer: {fileID: 6762889269655685109, guid: eeab32710f3cfdf47b3270215ad91434, type: 2}
+    Name: Win
+    Loop: 0
+    FadeIn: 1
+    FadeInTime: 0.1
+    FadeOut: 0
+    FadeOutTime: 0
+    Volume: 0.5
+    Pitch: 1
+    Source: {fileID: 0}
