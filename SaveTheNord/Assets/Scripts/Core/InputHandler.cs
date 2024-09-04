@@ -8,10 +8,10 @@ namespace Core
         private Institutions.Institution _store, _workshop, _factory, _lab;
         private void Awake()
         {
-            _store = FindObjectOfType<Institutions.Store>().GetComponent<Institutions.Institution>();
-            _workshop = FindObjectOfType<Institutions.Workshop>().GetComponent<Institutions.Institution>();
-            _factory = FindObjectOfType<Institutions.Factory>().GetComponent<Institutions.Institution>();
-            _lab = FindObjectOfType<Institutions.Laboratory>().GetComponent<Institutions.Institution>();
+            _store = FindFirstObjectByType<Institutions.Store>().GetComponent<Institutions.Institution>();
+            _workshop = FindFirstObjectByType<Institutions.Workshop>().GetComponent<Institutions.Institution>();
+            _factory = FindFirstObjectByType<Institutions.Factory>().GetComponent<Institutions.Institution>();
+            _lab = FindFirstObjectByType<Institutions.Laboratory>().GetComponent<Institutions.Institution>();
         }
 
         private void Update()

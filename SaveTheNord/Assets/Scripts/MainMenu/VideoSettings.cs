@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -12,7 +13,7 @@ namespace MainMenu
         [SerializeField] private VolumeProfile _volumeProfile;
         [SerializeField] private TMP_Dropdown _resolutionsDropdown, _fullscreenModeDropdown;
         [SerializeField] private Slider _motionBlurStrengthSlider;
-        private readonly List<Resolution> _filteredResolutions = new();
+        private List<Resolution> _filteredResolutions = new();
 
         private void OnEnable()
         {
@@ -33,28 +34,25 @@ namespace MainMenu
         
         void PopulateResolutionsDropdown()
         {
-            int resolutionIndex = 0;
+            var resolutionIndex = 0;
             List<string> options = new();
-            Resolution[] resolutions = Screen.resolutions;
 
-            for (int i = resolutions.Length - 1; i >= 0; i--)
-            {
-                if (resolutions[i].refreshRate == Screen.currentResolution.refreshRate || resolutions[i].refreshRate == Screen.currentResolution.refreshRate - 1)
-                {
-                    _filteredResolutions.Add(resolutions[i]);
-                }
-            }
-
+            _filteredResolutions = Screen.resolutions
+                .Where(r => 
+                    Mathf.Approximately((float)r.refreshRateRatio.value, (float)Screen.currentResolution.refreshRateRatio.value) ||
+                    Mathf.Approximately((float)r.refreshRateRatio.value, (float)Screen.currentResolution.refreshRateRatio.value - 1))
+                .Reverse().ToList();
+            
             for (int i = 0; i < _filteredResolutions.Count; i++) 
             {
-                string option = _filteredResolutions[i].width + " x " + _filteredResolutions[i].height;
+                var option = $"{_filteredResolutions[i].width}x{_filteredResolutions[i].height}";
                 options.Add(option);
 
-                if (_filteredResolutions[i].width == Screen.currentResolution.width && _filteredResolutions[i].height == Screen.currentResolution.height)
-                {
+                if (_filteredResolutions[i].width == Screen.currentResolution.width &&
+                    _filteredResolutions[i].height == Screen.currentResolution.height)
                     resolutionIndex = i;
-                }
             }
+            
             _resolutionsDropdown.AddOptions(options);
             _resolutionsDropdown.SetValueWithoutNotify(resolutionIndex);
             _resolutionsDropdown.RefreshShownValue();
