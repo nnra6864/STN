@@ -1,0 +1,4 @@
+[submodule "SaveTheNord/Assets/NnUtils"]
+	path = SaveTheNord/Assets/NnUtils
+	url = https://www.github.com/nnra6864/NnUtils.git
+	branch = master
