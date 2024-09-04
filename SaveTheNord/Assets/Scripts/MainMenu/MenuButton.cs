@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using NnUtils.Scripts;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -56,9 +57,7 @@ namespace MainMenu
             SoundManager.Instance.PlaySound("PlanetMoveTowards");
             while (_lerpPosition < 1)
             {
-                _lerpPosition += Time.deltaTime / _lerpLength;
-                _lerpPosition = Mathf.Clamp01(_lerpPosition);
-                float t = NnUtils.EaseInOutQuad(_lerpPosition);
+                var t = Misc.UpdateLerpPos(ref _lerpPosition, 0.5f, easingType: Easings.Types.QuadInOut);
                 transform.position = Vector3.Lerp(StartingPosition, _targetPosition, t);
                 transform.rotation = Quaternion.Lerp(StartingRotation, _targetRotation, t);
                 yield return new WaitForEndOfFrame();
@@ -70,9 +69,7 @@ namespace MainMenu
             SoundManager.Instance.PlaySound("PlanetMoveAway");
             while (_lerpPosition > 0)
             {
-                _lerpPosition -= Time.deltaTime / _lerpLength;
-                _lerpPosition = Mathf.Clamp01(_lerpPosition);
-                float t = NnUtils.EaseInOutQuad(_lerpPosition);
+                var t = Misc.ReverseLerpPos(ref _lerpPosition, 0.5f, easingType: Easings.Types.QuadInOut);
                 transform.position = Vector3.Lerp(StartingPosition, _targetPosition, t);
                 transform.rotation = Quaternion.Lerp(StartingRotation, _targetRotation, t);
                 yield return new WaitForEndOfFrame();
@@ -86,9 +83,7 @@ namespace MainMenu
             float hideLerpPosition = 0;
             while (hideLerpPosition < 1)
             {
-                hideLerpPosition += Time.deltaTime / _lerpLength;
-                hideLerpPosition = Mathf.Clamp01(hideLerpPosition);
-                float t = NnUtils.EaseInOutQuad(hideLerpPosition);
+                var t = Misc.UpdateLerpPos(ref hideLerpPosition, 0.5f, easingType: Easings.Types.QuadInOut);
                 transform.localScale = Vector3.Lerp(StartingScale, Vector3.zero, t);
                 yield return new WaitForEndOfFrame();
             }
@@ -100,9 +95,7 @@ namespace MainMenu
             float hideLerpPosition = 0;
             while (hideLerpPosition < 1)
             {
-                hideLerpPosition += Time.deltaTime / _lerpLength;
-                hideLerpPosition = Mathf.Clamp01(hideLerpPosition);
-                float t = NnUtils.EaseInOutQuad(hideLerpPosition);
+                var t = Misc.UpdateLerpPos(ref hideLerpPosition, 0.5f, easingType: Easings.Types.QuadInOut);
                 transform.localScale = Vector3.Lerp(Vector3.zero, StartingScale, t);
                 yield return new WaitForEndOfFrame();
             }

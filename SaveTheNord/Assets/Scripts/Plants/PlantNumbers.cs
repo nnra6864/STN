@@ -1,5 +1,6 @@
 using System.Collections;
 using Core;
+using NnUtils.Scripts;
 using UnityEngine;
 
 namespace Plants
@@ -40,11 +41,10 @@ namespace Plants
         IEnumerator Show()
         {
             SoundManager.Instance.PlaySound("Select");
+            
             while (_lerpPosition < 1)
             {
-                _lerpPosition += Time.deltaTime / 0.25f;
-                _lerpPosition = Mathf.Clamp01(_lerpPosition);
-                var t = NnUtils.EaseInOut(_lerpPosition);
+                var t = Misc.UpdateLerpPos(ref _lerpPosition, 0.25f, easingType: Easings.Types.SineInOut);
                 _rect.anchoredPosition = Vector2.Lerp(_hiddenPosition, _shownPosition, t);
                 _toggleButtonArrow.rotation = Quaternion.Lerp(_hiddenRotation, _shownRotation, t);
                 yield return null;
@@ -56,9 +56,7 @@ namespace Plants
             SoundManager.Instance.PlaySound("Select");
             while (_lerpPosition > 0)
             {
-                _lerpPosition -= Time.deltaTime / 0.25f;
-                _lerpPosition = Mathf.Clamp01(_lerpPosition);
-                var t = NnUtils.EaseInOut(_lerpPosition);
+                var t = Misc.ReverseLerpPos(ref _lerpPosition, 0.25f, easingType: Easings.Types.SineInOut);
                 _rect.anchoredPosition = Vector2.Lerp(_hiddenPosition, _shownPosition, t);
                 _toggleButtonArrow.rotation = Quaternion.Lerp(_hiddenRotation, _shownRotation, t);
                 yield return null;

@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static NnUtils.Scripts.Color;
 
 namespace MainMenu
 {
@@ -29,14 +30,14 @@ namespace MainMenu
 
         public void ChangeHoverColor(string input)
         {
-            var color = ColorUtility.ToHtmlStringRGBA(NnUtils.HexToRgba(input, new (235, 203, 139, 255)));
+            var color = ColorUtility.ToHtmlStringRGBA(HexToRgba(input, new (235, 203, 139, 255)));
             PlayerPrefs.SetString("TileHoverHex", color);
             _hoverColor.SetTextWithoutNotify(color);
         }
         
         public void ChangeSelectColor(string input)
         {
-            var color = ColorUtility.ToHtmlStringRGBA(NnUtils.HexToRgba(input, new (136, 192, 208, 255)));
+            var color = ColorUtility.ToHtmlStringRGBA(HexToRgba(input, new (136, 192, 208, 255)));
             PlayerPrefs.SetString("TileSelectHex", color);
             _selectColor.SetTextWithoutNotify(color);
         }
@@ -48,16 +49,16 @@ namespace MainMenu
         
         public void ChangeGroundColor(string input)
         {
-            var color = ColorUtility.ToHtmlStringRGBA(NnUtils.HexToRgba(input, new (65, 123, 56, 255)));
-            _groundTilesMaterial.color = NnUtils.HexToRgba(color, new (65, 123, 56, 255));
+            var color = ColorUtility.ToHtmlStringRGBA(HexToRgba(input, new (65, 123, 56, 255)));
+            _groundTilesMaterial.color = HexToRgba(color, new (65, 123, 56, 255));
             PlayerPrefs.SetString("GroundColor", color);
             _groundColor.SetTextWithoutNotify(color);
         }
         
         public void ChangeWaterColor(string input)
         {
-            var color = ColorUtility.ToHtmlStringRGBA(NnUtils.HexToRgba(input, new (94, 129, 172, 255)));
-            _waterTilesMaterial.color = NnUtils.HexToRgba(color, new (94, 129, 172, 255));
+            var color = ColorUtility.ToHtmlStringRGBA(HexToRgba(input, new (94, 129, 172, 255)));
+            _waterTilesMaterial.color = HexToRgba(color, new (94, 129, 172, 255));
             PlayerPrefs.SetString("WaterColor", color);
             _waterColor.SetTextWithoutNotify(color);
         }

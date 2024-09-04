@@ -1,7 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using NnUtils.Scripts;
 using Plants;
 using UnityEngine;
+using static NnUtils.Scripts.Color;
+using Color = UnityEngine.Color;
 
 namespace Core
 {
@@ -178,7 +182,6 @@ namespace Core
         private void Awake()
         {
             SoundManager.Instance.PlaySound("GameLoop");
-            NnUtils.UpdateLayers();
             ResetStats();
         }
 
@@ -199,7 +202,7 @@ namespace Core
 
         private void Raycast()
         {
-            if (NnUtils.IsPointerOverUIElement())
+            if (Misc.IsPointerOverUI)
             {
                 if (SelectedObject != null) SelectedInteract?.MouseLeave();
                 SelectedObject = null;
@@ -241,26 +244,18 @@ namespace Core
             float fogA = _fogMaterial.color.a;
             while (lerpPos < 1)
             {
-                lerpPos += Time.deltaTime;
-                lerpPos = Mathf.Clamp01(lerpPos);
-                var t = NnUtils.EaseInOut(lerpPos);
+                var t = Misc.UpdateLerpPos(ref lerpPos, easingType: Easings.Types.SineInOut);
                 var a = Mathf.Lerp(fogA, 0, t);
                 _fogMaterial.color = new Color(_fogMaterial.color.r, _fogMaterial.color.g, _fogMaterial.color.b, a);
                 foreach (var rend in WaterTileRenderers)
-                {
                     rend.material.SetFloat(_glossMapScale, Mathf.Lerp(0, 1, t));
-                }
                 yield return null;
             }
             _win.SavedTheNord();
         }
 
-        bool HasEnoughPlants()
-        {
-            foreach (var pn in PlantNumbers)
-                if (pn.Value.Amount < pn.Value.Target) return false;
-            return true;
-        }
+        bool HasEnoughPlants() =>
+            PlantNumbers.All(pn => pn.Value.Amount >= pn.Value.Target);
 
         private void ResetStats()
         {
@@ -273,9 +268,9 @@ namespace Core
             VegetationGoals = _vegetationGoals;
             ColorUpdateSpeed = PlayerPrefs.GetFloat("TileTransitionTime", 0.25f);
             TileHoverColor =
-                NnUtils.HexToRgba(PlayerPrefs.GetString("TileHoverHex", "EBCB8BFF"), new(235, 203, 139, 255));
+                HexToRgba(PlayerPrefs.GetString("TileHoverHex", "EBCB8BFF"), new(235, 203, 139, 255));
             TileSelectColor =
-                NnUtils.HexToRgba(PlayerPrefs.GetString("TileSelectHex", "88C0D0FF"), new(136, 192, 208, 255));
+                HexToRgba(PlayerPrefs.GetString("TileSelectHex", "88C0D0FF"), new(136, 192, 208, 255));
             TimerTime = 0;
             GroundTiles.Clear();
             WaterTiles.Clear();

@@ -13,18 +13,18 @@ namespace Plants
                 {
                     if (IsFertilized || Hotbar.FertilizerCount < 1)
                     {
-                        if (DeniedCoroutine == null && FertilizeCoroutine == null) DeniedCoroutine = StartCoroutine(Deny());
+                        if (_denyRoutine == null && _fertilizeRoutine == null) _denyRoutine = StartCoroutine(DenyRoutine());
                         return;
                     }
-                    FertilizeCoroutine ??= StartCoroutine(Fertilize());
+                    _fertilizeRoutine ??= StartCoroutine(FertilizeRoutine());
                 }
-                else if (DeniedCoroutine == null) DeniedCoroutine = StartCoroutine(Deny());
+                else if (_denyRoutine == null) _denyRoutine = StartCoroutine(DenyRoutine());
                 return;
             }
 
             if (Hotbar.SelectedTool == Hotbar.Tools.Hand)
                 Harvest();
-            else if (DeniedCoroutine == null) DeniedCoroutine = StartCoroutine(Deny());
+            else if (_denyRoutine == null) _denyRoutine = StartCoroutine(DenyRoutine());
         }
     
         void Harvest()

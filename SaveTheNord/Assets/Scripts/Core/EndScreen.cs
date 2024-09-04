@@ -1,4 +1,5 @@
 using System.Collections;
+using NnUtils.Scripts;
 using UnityEngine;
 using TMPro;
 
@@ -51,9 +52,7 @@ namespace Core
             
             while (lerpPosition < 1)
             {
-                lerpPosition += Time.deltaTime / 0.5f;
-                lerpPosition = Mathf.Clamp01(lerpPosition);
-                var t = NnUtils.EaseInOutQuad(lerpPosition);
+                var t = Misc.UpdateLerpPos(ref lerpPosition, 0.5f, easingType: Easings.Types.QuadInOut);
                 Scaler.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
                 yield return new WaitForEndOfFrame();
             }

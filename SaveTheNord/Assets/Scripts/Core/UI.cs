@@ -1,4 +1,5 @@
 using System.Collections;
+using NnUtils.Scripts;
 using Plants;
 using UnityEngine;
 using TMPro;
@@ -56,12 +57,11 @@ namespace Core
             
             while (lerpPosition < 1)
             {
-                lerpPosition += Time.deltaTime / 0.5f;
-                lerpPosition = Mathf.Clamp01(lerpPosition);
-                var t = NnUtils.EaseInOutQuad(lerpPosition);
+                var t = Misc.UpdateLerpPos(ref lerpPosition, 0.5f, easingType: Easings.Types.QuadInOut);
                 _uiScaler.transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, t);
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
+            
             gameObject.SetActive(false);
         }
         public IEnumerator HideUISaved()
@@ -71,9 +71,7 @@ namespace Core
             
             while (lerpPosition < 1)
             {
-                lerpPosition += Time.deltaTime / 0.5f;
-                lerpPosition = Mathf.Clamp01(lerpPosition);
-                var t = NnUtils.EaseInOutQuad(lerpPosition);
+                var t = Misc.UpdateLerpPos(ref lerpPosition, 0.5f, easingType: Easings.Types.QuadInOut);
                 _uiScaler.transform.localScale = Vector3.Lerp(Vector3.one, Vector3.one * 5, t);
                 yield return new WaitForEndOfFrame();
             }

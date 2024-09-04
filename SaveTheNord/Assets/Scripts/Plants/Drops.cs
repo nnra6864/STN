@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Core;
+using NnUtils.Scripts;
 using UnityEngine;
 
 namespace Plants
@@ -19,6 +20,7 @@ namespace Plants
     public class Drops : MonoBehaviour
     {
         [SerializeField] private GameObject _dropPrefab;
+        //TODO: Convert to stack
         [HideInInspector] public List<DropItem> DroppedItems = new();
 
         private void Awake()
@@ -38,35 +40,34 @@ namespace Plants
 
                 var droppedItem = DroppedItems[0];
                 DroppedItems.RemoveAt(0);
-                yield return StartCoroutine(ShowDrop(droppedItem));
+                yield return StartCoroutine(ShowDropRoutine(droppedItem));
             }
-            // ReSharper disable once IteratorNeverReturns
         }
 
         private Coroutine _showDropCoroutine;
-        IEnumerator ShowDrop(DropItem dropItem)
+        IEnumerator ShowDropRoutine(DropItem dropItem)
         {
             var ui = Instantiate(_dropPrefab, transform);
             ui.GetComponent<Drop>().UpdateInfo(dropItem);
             var rt = ui.GetComponent<RectTransform>();
             float lerpPos = 1;
+            
             while (lerpPos > 0)
             {
-                lerpPos -= Time.deltaTime / 0.5f;
-                lerpPos = Mathf.Clamp01(lerpPos);
-                var t = NnUtils.EaseInOutCubic(lerpPos);
+                var t = Misc.ReverseLerpPos(ref lerpPos, 0.5f, easingType: Easings.Types.CubicInOut);
                 rt.anchoredPosition = Vector2.Lerp(Vector2.zero, Vector2.up * 100, t);
                 yield return null;
             }
+            
             yield return new WaitForSeconds(1);
+            
             while (lerpPos < 1)
             {
-                lerpPos += Time.deltaTime / 1;
-                lerpPos = Mathf.Clamp01(lerpPos);
-                var t = NnUtils.EaseInOutCubic(lerpPos);
+                var t = Misc.UpdateLerpPos(ref lerpPos, 0.5f, easingType: Easings.Types.CubicInOut);
                 rt.anchoredPosition = Vector2.Lerp(Vector2.zero, Vector2.up * 100, t);
                 yield return null;
             }
+            
             Destroy(ui);
         }
     }

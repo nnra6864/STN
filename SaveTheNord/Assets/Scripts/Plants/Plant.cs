@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Core;
+using NnUtils.Scripts;
 using UnityEngine;
 
 namespace Plants
@@ -20,7 +21,7 @@ namespace Plants
         }
     }
     
-    public class Plant : MonoBehaviour, IInteract
+    public class Plant : NnBehaviour, IInteract
     {
         public delegate void OnValueChanged();
 
@@ -72,7 +73,7 @@ namespace Plants
         public OnValueChanged OnMaturityChanged;
         
         [HideInInspector] public float StartingHealth;
-        protected Vector3 StartingPosition;
+        protected Vector3 _startingPosition;
         private bool _isFertilized;
         public bool IsFertilized
         {
@@ -119,7 +120,7 @@ namespace Plants
         protected void Awake()
         {
             StartingHealth = Health;
-            StartingPosition = transform.position;
+            _startingPosition = transform.position;
             StartCoroutine(LifeCycle());
         }
 
@@ -136,11 +137,11 @@ namespace Plants
             }
             Stats.PlantNumbers[_plantName].Amount++;
             Stats.PlantNumbers[_plantName].OnAmountChanged?.Invoke();
-            ReducePollutionCoroutine = StartCoroutine(ReducePollution());
+            _reducePollutionRoutine = StartCoroutine(ReducePollutionRoutine());
         }
 
-        protected Coroutine ReducePollutionCoroutine;
-        protected IEnumerator ReducePollution()
+        protected Coroutine _reducePollutionRoutine;
+        protected IEnumerator ReducePollutionRoutine()
         {
             while (Health > 0)
             {
@@ -150,7 +151,7 @@ namespace Plants
             }
         }
 
-        protected Coroutine EngageWorkersCoroutine;
+        protected Coroutine _engageWorkersRoutine;
         protected IEnumerator EngageWorkers()
         {
             Hotbar.WorkersCount--;
@@ -165,13 +166,13 @@ namespace Plants
                 SoundManager.Instance.PlaySound(PlantType == PlantTypes.Tree ? "WorkersAxeHit" : "WorkersShears");
                 if (PlantType == PlantTypes.Tree)
                 {
-                    if (ShakeCoroutine != null) StopCoroutine(ShakeCoroutine);
-                    ShakeCoroutine = StartCoroutine(Shake());
+                    if (_shakeRoutine != null) StopCoroutine(_shakeRoutine);
+                    _shakeRoutine = StartCoroutine(ShakeRoutine());
                 }
                 else if (PlantType == PlantTypes.Bush)
                 {
-                    if (ShrinkCoroutine != null) StopCoroutine(ShrinkCoroutine);
-                    ShrinkCoroutine = StartCoroutine(Shrink());
+                    if (_shrinkRoutine != null) StopCoroutine(_shrinkRoutine);
+                    _shrinkRoutine = StartCoroutine(ShrinkRoutine());
                 }
                 yield return new WaitForSeconds(PlantType == PlantTypes.Tree ? 0.6f : 0.4f);
             }
@@ -183,14 +184,11 @@ namespace Plants
             float lerpPosition = 0;
             
             foreach (var particle in DeathParticles)
-            {
                 particle.Play();
-            }
             
             while (lerpPosition < 1)
             {
-                lerpPosition += Time.deltaTime / 0.5f;
-                var t = NnUtils.EaseInBack(lerpPosition);
+                var t = Misc.UpdateLerpPos(ref lerpPosition, 0.5f, easingType: Easings.Types.ExpoOut);
                 transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, t);
                 yield return new WaitForEndOfFrame();
             }
@@ -202,12 +200,8 @@ namespace Plants
                 drop.Drop.Amount += amount;
 
                 var existingItem = UI.Drops.DroppedItems.Find(x => x.Item == drop.Drop);
-                if (existingItem != null)
-                {
-                    existingItem.Amount += amount;
-                }
-                else
-                    UI.Drops.DroppedItems.Add(new DropItem(drop.Drop, amount));
+                if (existingItem != null) existingItem.Amount += amount;
+                else UI.Drops.DroppedItems.Add(new DropItem(drop.Drop, amount));
             }
 
             SoundManager.Instance.PlaySound("PlantDestroyed");
@@ -223,16 +217,16 @@ namespace Plants
             Destroy(gameObject);
         }
 
-        protected Coroutine DeniedCoroutine;
-        protected IEnumerator Deny()
+        protected Coroutine _denyRoutine;
+        protected IEnumerator DenyRoutine()
         {
             SoundManager.Instance.PlaySound("Denied");
             yield return new WaitForSeconds(0.25f);
-            DeniedCoroutine = null;
+            _denyRoutine = null;
         }
         
-        protected Coroutine FertilizeCoroutine;
-        protected IEnumerator Fertilize()
+        protected Coroutine _fertilizeRoutine;
+        protected IEnumerator FertilizeRoutine()
         {
             SoundManager.Instance.PlaySound("Fertilize");
             FertilizeParticles.Play();
@@ -240,23 +234,24 @@ namespace Plants
             GrowthTime *= 0.5f;
             Hotbar.FertilizerCount--;
             yield return new WaitForSeconds(0.25f);
-            FertilizeCoroutine = null;
+            _fertilizeRoutine = null;
         }
 
-        protected Coroutine StartWorkersCoroutine;
-        protected IEnumerator StartWorkers()
+        protected Coroutine _startWorkersRoutine;
+        protected IEnumerator StartWorkersRoutine()
         {
             if (Hotbar.WorkersCount < 1)
             {
-                if (DeniedCoroutine == null) DeniedCoroutine = StartCoroutine(Deny());
+                StartNullRoutine(ref _denyRoutine, DenyRoutine());
                 yield break;
             }
+            
             SoundManager.Instance.PlaySound("EngageWorkers");
-            if (EngageWorkersCoroutine == null)
-                EngageWorkersCoroutine = StartCoroutine(EngageWorkers());
-            else if (DeniedCoroutine == null) DeniedCoroutine = StartCoroutine(Deny());
+            if (_engageWorkersRoutine == null) _engageWorkersRoutine = StartCoroutine(EngageWorkers());
+            else if (_denyRoutine == null) _denyRoutine = StartCoroutine(DenyRoutine());
+            
             yield return new WaitForSeconds(0.25f);
-            StartWorkersCoroutine = null;
+            _startWorkersRoutine = null;
         }
         
         public void ToggleInfo()
@@ -268,33 +263,29 @@ namespace Plants
             SoundManager.Instance.PlaySound("Select");
         }
 
-        protected Coroutine ShakeCoroutine;
-        protected IEnumerator Shake()
+        protected Coroutine _shakeRoutine;
+        protected IEnumerator ShakeRoutine()
         {
             float lerpPosition = 0;
             var startingPosition = transform.position;
-            var targetPosition = new Vector3(StartingPosition.x + Random.Range(-0.05f, 0.05f), StartingPosition.y, StartingPosition.z + Random.Range(-0.05f, 0.05f));
+            var targetPosition = new Vector3(_startingPosition.x + Random.Range(-0.05f, 0.05f), _startingPosition.y, _startingPosition.z + Random.Range(-0.05f, 0.05f));
             while (lerpPosition < 1)
             {
-                lerpPosition += Time.deltaTime / 0.05f;
-                lerpPosition = Mathf.Clamp01(lerpPosition);
-                var t = NnUtils.EaseOut(lerpPosition);
+                var t = Misc.UpdateLerpPos(ref lerpPosition, 0.05f, easingType: Easings.Types.SineOut);
                 transform.position = Vector3.Lerp(startingPosition, targetPosition, t);
                 yield return null;
             }
             while (lerpPosition > 0)
             {
-                lerpPosition -= Time.deltaTime / 0.5f;
-                lerpPosition = Mathf.Clamp01(lerpPosition);
-                var t = NnUtils.EaseIn(lerpPosition);
-                transform.position = Vector3.Lerp(StartingPosition, targetPosition, t);
+                var t = Misc.ReverseLerpPos(ref lerpPosition, 0.05f, easingType: Easings.Types.SineIn);
+                transform.position = Vector3.Lerp(_startingPosition, targetPosition, t);
                 yield return null;
             }
-            ShakeCoroutine = null;
+            _shakeRoutine = null;
         }
 
-        protected Coroutine ShrinkCoroutine;
-        protected IEnumerator Shrink()
+        protected Coroutine _shrinkRoutine;
+        protected IEnumerator ShrinkRoutine()
         {
             float lerpPosition = 0;
             var startingScale = transform.localScale;
@@ -302,21 +293,18 @@ namespace Plants
             var targetScale = new Vector3(rand, rand, rand);
             while (lerpPosition < 1)
             {
-                lerpPosition += Time.deltaTime / 0.1f;
-                lerpPosition = Mathf.Clamp01(lerpPosition);
-                var t = NnUtils.EaseIn(lerpPosition);
+                var t = Misc.UpdateLerpPos(ref lerpPosition, 0.1f, easingType: Easings.Types.SineIn);
                 transform.localScale = Vector3.Lerp(startingScale, targetScale, t);
                 yield return null;
             }
+            
             while (lerpPosition > 0)
             {
-                lerpPosition -= Time.deltaTime / 0.1f;
-                lerpPosition = Mathf.Clamp01(lerpPosition);
-                var t = NnUtils.EaseOut(lerpPosition);
+                var t = Misc.ReverseLerpPos(ref lerpPosition, 0.1f, easingType: Easings.Types.SineOut);
                 transform.localScale = Vector3.Lerp(Vector3.one, targetScale, t);
                 yield return null;
             }
-            ShakeCoroutine = null;
+            _shakeRoutine = null;
         }
         
         public virtual void MouseEnter() { }

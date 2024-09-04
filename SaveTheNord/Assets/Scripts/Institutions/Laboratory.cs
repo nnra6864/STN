@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using NnUtils.Scripts;
 using UnityEngine;
 
 namespace Institutions
@@ -45,22 +46,18 @@ namespace Institutions
             {
                 while (lerpPosition < 1)
                 {
-                    lerpPosition += Time.deltaTime / _crystalMoveTime;
-                    lerpPosition = Mathf.Clamp01(lerpPosition);
-                    var t = NnUtils.EaseInOut(lerpPosition);
+                    var t = Misc.UpdateLerpPos(ref lerpPosition, _crystalMoveTime, easingType: Easings.Types.SineInOut);
                     _crystal.transform.localPosition = Vector3.Lerp(_minCrystalPosition, _maxCrystalPosition, t);
                     yield return null;
                 }
+                
                 while (lerpPosition > 0)
                 {
-                    lerpPosition -= Time.deltaTime / _crystalMoveTime;
-                    lerpPosition = Mathf.Clamp01(lerpPosition);
-                    var t = NnUtils.EaseInOut(lerpPosition);
+                    var t = Misc.ReverseLerpPos(ref lerpPosition, _crystalMoveTime, easingType: Easings.Types.SineInOut);
                     _crystal.transform.localPosition = Vector3.Lerp(_minCrystalPosition, _maxCrystalPosition, t);
                     yield return null;
                 }
             }
-            // ReSharper disable once IteratorNeverReturns
         }
     }
 }

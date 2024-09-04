@@ -17,13 +17,13 @@ namespace Plants
                 {
                     if (IsFertilized || Hotbar.FertilizerCount < 1)
                     {
-                        if (DeniedCoroutine == null && FertilizeCoroutine == null) DeniedCoroutine = StartCoroutine(Deny());
+                        if (_denyRoutine == null && _fertilizeRoutine == null) _denyRoutine = StartCoroutine(DenyRoutine());
                         return;
                     }
-                    FertilizeCoroutine ??= StartCoroutine(Fertilize());
+                    _fertilizeRoutine ??= StartCoroutine(FertilizeRoutine());
                     return;
                 }
-                else if (DeniedCoroutine == null) DeniedCoroutine = StartCoroutine(Deny());
+                else if (_denyRoutine == null) _denyRoutine = StartCoroutine(DenyRoutine());
                 return;
             }
             
@@ -31,9 +31,9 @@ namespace Plants
                 _hitCoroutine ??= StartCoroutine(AxeHit());
             else if (Hotbar.SelectedTool == Hotbar.Tools.Workers)
             {
-                StartWorkersCoroutine ??= StartCoroutine(StartWorkers());
+                _startWorkersRoutine ??= StartCoroutine(StartWorkersRoutine());
             }
-            else if (DeniedCoroutine == null && StartWorkersCoroutine == null) DeniedCoroutine = StartCoroutine(Deny());
+            else if (_denyRoutine == null && _startWorkersRoutine == null) _denyRoutine = StartCoroutine(DenyRoutine());
         }
     
         private Coroutine _hitCoroutine;
@@ -43,8 +43,8 @@ namespace Plants
             Health -= 5;
             if (PlantType == PlantTypes.Tree)
             {
-                if (ShakeCoroutine != null) StopCoroutine(ShakeCoroutine);
-                ShakeCoroutine = StartCoroutine(Shake());
+                if (_shakeRoutine != null) StopCoroutine(_shakeRoutine);
+                _shakeRoutine = StartCoroutine(ShakeRoutine());
             }
             SoundManager.Instance.PlaySound("AxeHit");
             foreach (var particle in HitParticles)

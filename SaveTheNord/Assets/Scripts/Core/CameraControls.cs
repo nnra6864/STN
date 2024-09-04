@@ -1,3 +1,4 @@
+using NnUtils.Scripts;
 using UnityEngine;
 
 namespace Core
@@ -33,8 +34,8 @@ namespace Core
 
         void Zoom()
         {
-            if (NnUtils.IsPointerOverUIElement()) return;
-            _currentZoom += (Input.GetAxisRaw("Mouse ScrollWheel")) * _zoomSensitivity;
+            if (Misc.IsPointerOverUI) return;
+            _currentZoom += Input.GetAxisRaw("Mouse ScrollWheel") * _zoomSensitivity;
             _currentZoom = _currentZoom < _zoomMin ? _zoomMin : _currentZoom > _zoomMax ? _zoomMax : _currentZoom;
         }
     }

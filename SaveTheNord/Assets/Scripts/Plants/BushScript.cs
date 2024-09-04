@@ -17,13 +17,13 @@ namespace Plants
                 {
                     if (IsFertilized || Hotbar.FertilizerCount < 1)
                     {
-                        if (DeniedCoroutine == null && FertilizeCoroutine == null) DeniedCoroutine = StartCoroutine(Deny());
+                        if (_denyRoutine == null && _fertilizeRoutine == null) _denyRoutine = StartCoroutine(DenyRoutine());
                         return;
                     }
 
-                    FertilizeCoroutine ??= StartCoroutine(Fertilize());
+                    _fertilizeRoutine ??= StartCoroutine(FertilizeRoutine());
                 }
-                else if (DeniedCoroutine == null) DeniedCoroutine = StartCoroutine(Deny());
+                else if (_denyRoutine == null) _denyRoutine = StartCoroutine(DenyRoutine());
                 return;
             }
 
@@ -31,9 +31,9 @@ namespace Plants
                 _harvestCoroutine ??= StartCoroutine(Harvest());
             else if (Hotbar.SelectedTool == Hotbar.Tools.Workers)
             {
-                StartWorkersCoroutine ??= StartCoroutine(StartWorkers());
+                _startWorkersRoutine ??= StartCoroutine(StartWorkersRoutine());
             }
-            else if (DeniedCoroutine == null && StartWorkersCoroutine == null) DeniedCoroutine = StartCoroutine(Deny());
+            else if (_denyRoutine == null && _startWorkersRoutine == null) _denyRoutine = StartCoroutine(DenyRoutine());
         }
         
         private Coroutine _harvestCoroutine;
@@ -41,8 +41,8 @@ namespace Plants
         {
             if (Health <= 0) yield break;
             Health -= 5;
-            if (ShrinkCoroutine != null) StopCoroutine(ShrinkCoroutine);
-            ShrinkCoroutine = StartCoroutine(Shrink());
+            if (_shrinkRoutine != null) StopCoroutine(_shrinkRoutine);
+            _shrinkRoutine = StartCoroutine(ShrinkRoutine());
             SoundManager.Instance.PlaySound("Shears");
             foreach (var particle in HitParticles)
             {

@@ -1,9 +1,11 @@
 using System.Collections;
+using NnUtils.Scripts;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
+using static NnUtils.Scripts.Color;
 
 namespace MainMenu
 {
@@ -24,8 +26,8 @@ namespace MainMenu
             _audioMixer.SetFloat("MasterVolume", PlayerPrefs.GetFloat("MasterVolume"));
             _audioMixer.SetFloat("MusicVolume", PlayerPrefs.GetFloat("MusicVolume"));
             _audioMixer.SetFloat("SfxVolume", PlayerPrefs.GetFloat("SfxVolume"));
-            _groundMaterial.color = NnUtils.HexToRgba(PlayerPrefs.GetString("GroundColor", "417B38FF"), new (65, 123, 56, 255));
-            _waterMaterial.color = NnUtils.HexToRgba(PlayerPrefs.GetString("WaterColor", "5E81ACFF"), new (94, 129, 172, 255));
+            _groundMaterial.color = HexToRgba(PlayerPrefs.GetString("GroundColor", "417B38FF"), new (65, 123, 56, 255));
+            _waterMaterial.color = HexToRgba(PlayerPrefs.GetString("WaterColor", "5E81ACFF"), new (94, 129, 172, 255));
             SoundManager.Instance.StopSound("GameLoop");
             SoundManager.Instance.PlaySound("MenuLoop");
             ShowPlanets();
@@ -134,9 +136,7 @@ namespace MainMenu
             
             while (lerpPosition < 1)
             {
-                lerpPosition += Time.deltaTime / 0.5f;
-                lerpPosition = Mathf.Clamp01(lerpPosition);
-                var t = NnUtils.EaseInOutQuad(lerpPosition);
+                var t = Misc.UpdateLerpPos(ref lerpPosition, 0.5f, easingType: Easings.Types.QuadInOut);
                 ui.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
                 yield return null;
             }
@@ -149,9 +149,7 @@ namespace MainMenu
             
             while (lerpPosition < 1)
             {
-                lerpPosition += Time.deltaTime / 0.5f;
-                lerpPosition = Mathf.Clamp01(lerpPosition);
-                var t = NnUtils.EaseInOutQuad(lerpPosition);
+                var t = Misc.UpdateLerpPos(ref lerpPosition, 0.5f, easingType: Easings.Types.QuadInOut);
                 ui.transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, t);
                 yield return null;
             }
