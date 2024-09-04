@@ -36,12 +36,15 @@ namespace MainMenu
         {
             var resolutionIndex = 0;
             List<string> options = new();
+            
+            //Will leave it for now but causes no res to appear on linux
+            //_filteredResolutions = Screen.resolutions
+            //    .Where(r => 
+            //        Mathf.Approximately((float)r.refreshRateRatio.value, (float)Screen.currentResolution.refreshRateRatio.value) ||
+            //        Mathf.Approximately((float)r.refreshRateRatio.value, (float)Screen.currentResolution.refreshRateRatio.value - 1))
+            //    .Reverse().ToList();
 
-            _filteredResolutions = Screen.resolutions
-                .Where(r => 
-                    Mathf.Approximately((float)r.refreshRateRatio.value, (float)Screen.currentResolution.refreshRateRatio.value) ||
-                    Mathf.Approximately((float)r.refreshRateRatio.value, (float)Screen.currentResolution.refreshRateRatio.value - 1))
-                .Reverse().ToList();
+            _filteredResolutions = Screen.resolutions.Reverse().ToList();
             
             for (int i = 0; i < _filteredResolutions.Count; i++) 
             {
