@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Core;
 using NnUtils.Scripts;
@@ -8,7 +9,7 @@ namespace Plants
     public class PlantNumbers : NnBehaviour
     {
         private bool _isHidden = true;
-        private float _lerpPosition;
+        private float _lerpPos;
         private Vector2 _hiddenPosition, _shownPosition;
         private Quaternion _hiddenRotation, _shownRotation;
         private RectTransform _rect;
@@ -36,39 +37,27 @@ namespace Plants
 
         public void ToggleUI()
         {
-            StartNullRoutine(ref _toggleRoutine, _isHidden ? ShowRoutine() : HideRoutine());
-            _isHidden = !_isHidden;
+            StartNullRoutine(ref _toggleRoutine, ToggleRoutine());
         }
 
         private Coroutine _toggleRoutine;
-
-        private IEnumerator ShowRoutine()
+        private IEnumerator ToggleRoutine()
         {
+            _isHidden = !_isHidden;
             SoundManager.Instance.PlaySound("Select");
+
+            Func<float> lerp = _isHidden 
+                ? () => Misc.ReverseLerpPos(ref _lerpPos, _transitionTime, _transitionEasing)
+                : () => Misc.UpdateLerpPos(ref _lerpPos, _transitionTime, _transitionEasing); 
             
-            while (_lerpPosition < 1)
+            while (_isHidden ? _lerpPos > 0 : _lerpPos < 1)
             {
-                var t = Misc.UpdateLerpPos(ref _lerpPosition, _transitionTime, _transitionEasing);
+                var t = lerp();
                 _rect.anchoredPosition = Vector2.Lerp(_hiddenPosition, _shownPosition, t);
                 _toggleButtonArrow.rotation = Quaternion.Lerp(_hiddenRotation, _shownRotation, t);
                 yield return null;
             }
-
-            _toggleRoutine = null;
-        }
-
-        private IEnumerator HideRoutine()
-        {
-            SoundManager.Instance.PlaySound("Select");
             
-            while (_lerpPosition > 0)
-            {
-                var t = Misc.ReverseLerpPos(ref _lerpPosition, _transitionTime, _transitionEasing);
-                _rect.anchoredPosition = Vector2.Lerp(_hiddenPosition, _shownPosition, t);
-                _toggleButtonArrow.rotation = Quaternion.Lerp(_hiddenRotation, _shownRotation, t);
-                yield return null;
-            }
-
             _toggleRoutine = null;
         }
     }
