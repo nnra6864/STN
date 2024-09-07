@@ -35,11 +35,7 @@ namespace Plants
             }
         }
 
-        public void ToggleUI()
-        {
-            StartNullRoutine(ref _toggleRoutine, ToggleRoutine());
-        }
-
+        public void ToggleUI() => StartNullRoutine(ref _toggleRoutine, ToggleRoutine());
         private Coroutine _toggleRoutine;
         private IEnumerator ToggleRoutine()
         {
