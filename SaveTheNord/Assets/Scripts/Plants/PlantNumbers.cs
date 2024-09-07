@@ -44,7 +44,7 @@ namespace Plants
             
             while (_lerpPosition < 1)
             {
-                var t = Misc.UpdateLerpPos(ref _lerpPosition, 0.25f, easingType: Easings.Types.SineInOut);
+                var t = Misc.UpdateLerpPos(ref _lerpPosition, 0.25f, easingType: Easings.Type.SineInOut);
                 _rect.anchoredPosition = Vector2.Lerp(_hiddenPosition, _shownPosition, t);
                 _toggleButtonArrow.rotation = Quaternion.Lerp(_hiddenRotation, _shownRotation, t);
                 yield return null;
@@ -56,7 +56,7 @@ namespace Plants
             SoundManager.Instance.PlaySound("Select");
             while (_lerpPosition > 0)
             {
-                var t = Misc.ReverseLerpPos(ref _lerpPosition, 0.25f, easingType: Easings.Types.SineInOut);
+                var t = Misc.ReverseLerpPos(ref _lerpPosition, 0.25f, easingType: Easings.Type.SineInOut);
                 _rect.anchoredPosition = Vector2.Lerp(_hiddenPosition, _shownPosition, t);
                 _toggleButtonArrow.rotation = Quaternion.Lerp(_hiddenRotation, _shownRotation, t);
                 yield return null;

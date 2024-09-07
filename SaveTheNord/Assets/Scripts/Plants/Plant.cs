@@ -188,7 +188,7 @@ namespace Plants
             
             while (lerpPosition < 1)
             {
-                var t = Misc.UpdateLerpPos(ref lerpPosition, 0.5f, easingType: Easings.Types.ExpoOut);
+                var t = Misc.UpdateLerpPos(ref lerpPosition, 0.5f, easingType: Easings.Type.ExpoOut);
                 transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, t);
                 yield return new WaitForEndOfFrame();
             }
@@ -271,13 +271,13 @@ namespace Plants
             var targetPosition = new Vector3(_startingPosition.x + Random.Range(-0.05f, 0.05f), _startingPosition.y, _startingPosition.z + Random.Range(-0.05f, 0.05f));
             while (lerpPosition < 1)
             {
-                var t = Misc.UpdateLerpPos(ref lerpPosition, 0.05f, easingType: Easings.Types.SineOut);
+                var t = Misc.UpdateLerpPos(ref lerpPosition, 0.05f, easingType: Easings.Type.SineOut);
                 transform.position = Vector3.Lerp(startingPosition, targetPosition, t);
                 yield return null;
             }
             while (lerpPosition > 0)
             {
-                var t = Misc.ReverseLerpPos(ref lerpPosition, 0.05f, easingType: Easings.Types.SineIn);
+                var t = Misc.ReverseLerpPos(ref lerpPosition, 0.05f, easingType: Easings.Type.SineIn);
                 transform.position = Vector3.Lerp(_startingPosition, targetPosition, t);
                 yield return null;
             }
@@ -293,14 +293,14 @@ namespace Plants
             var targetScale = new Vector3(rand, rand, rand);
             while (lerpPosition < 1)
             {
-                var t = Misc.UpdateLerpPos(ref lerpPosition, 0.1f, easingType: Easings.Types.SineIn);
+                var t = Misc.UpdateLerpPos(ref lerpPosition, 0.1f, easingType: Easings.Type.SineIn);
                 transform.localScale = Vector3.Lerp(startingScale, targetScale, t);
                 yield return null;
             }
             
             while (lerpPosition > 0)
             {
-                var t = Misc.ReverseLerpPos(ref lerpPosition, 0.1f, easingType: Easings.Types.SineOut);
+                var t = Misc.ReverseLerpPos(ref lerpPosition, 0.1f, easingType: Easings.Type.SineOut);
                 transform.localScale = Vector3.Lerp(Vector3.one, targetScale, t);
                 yield return null;
             }

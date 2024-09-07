@@ -46,14 +46,14 @@ namespace Institutions
             {
                 while (lerpPosition < 1)
                 {
-                    var t = Misc.UpdateLerpPos(ref lerpPosition, _crystalMoveTime, easingType: Easings.Types.SineInOut);
+                    var t = Misc.UpdateLerpPos(ref lerpPosition, _crystalMoveTime, easingType: Easings.Type.SineInOut);
                     _crystal.transform.localPosition = Vector3.Lerp(_minCrystalPosition, _maxCrystalPosition, t);
                     yield return null;
                 }
                 
                 while (lerpPosition > 0)
                 {
-                    var t = Misc.ReverseLerpPos(ref lerpPosition, _crystalMoveTime, easingType: Easings.Types.SineInOut);
+                    var t = Misc.ReverseLerpPos(ref lerpPosition, _crystalMoveTime, easingType: Easings.Type.SineInOut);
                     _crystal.transform.localPosition = Vector3.Lerp(_minCrystalPosition, _maxCrystalPosition, t);
                     yield return null;
                 }

@@ -19,18 +19,24 @@ namespace Core
             public Vector2 SpawnNumberRange;
         }
         
+        
         private readonly List<Transform> _tiles = new();
+        private int _generatedTiles;
         public bool IsDestroyed;
+        
+        [Header("Components")]
         [SerializeField] private ParticleSystem _fog;
         [SerializeField] private VolumeProfile _volumeProfile;
         [SerializeField] private EndScreen _endScreen;
-        private int _generatedTiles;
         [SerializeField] private GameObject _groundTileUI, _waterTileUI;
-        [SerializeField] private float _pauseLength;
-        [SerializeField] private float _lerpSpeed;
-        [SerializeField] private float _xMin, _xMax, _yMin, _yMax, _zMin, _zMax;
-        [SerializeField] private float _xRotMin, _xRotMax, _yRotMin, _yRotMax, _zRotMin, _zRotMax;
         [SerializeField] private List<StartingPlant> _startingPlants;
+        
+        [Header("Generation")]
+        [SerializeField] private float _timeBetweenTiles = 0.005f;
+        [SerializeField] private float _tileTransitionTime = 1.5f;
+        [SerializeField] private Easings.Type _tileTransitionEasing = Easings.Type.CubicOut;
+        [SerializeField] private float _maxStartDistance = 5;
+        [SerializeField] private float _maxStartRotation = 360;
 
         private void Awake()
         {
@@ -76,31 +82,35 @@ namespace Core
         private IEnumerator GenerateTile(Transform tile)
         {
             float lerpPosition = 0;
-            var originalPosition = tile.position;
-            var originalRotation = tile.rotation;
+            var originalPos = tile.position;
+            var originalRot = tile.rotation;
             var originalScale = tile.localScale;
-        
+
             tile.position = new(
-                Random.Range(originalPosition.x + _xMin, originalPosition.x + _xMax),
-                Random.Range(originalPosition.y + _yMin, originalPosition.y + _yMax),
-                Random.Range(originalPosition.z + _zMin, originalPosition.z + _zMax));
-            tile.rotation = Quaternion.Euler(new(
-                Random.Range(originalRotation.x + _xRotMin, originalRotation.x + _xRotMax),
-                Random.Range(originalRotation.y + _yRotMin, originalRotation.y + _yRotMax),
-                Random.Range(originalRotation.z + _zRotMin, originalRotation.z + _zRotMax)));
+                originalPos.x + _maxStartDistance * Misc.RandomInvert,
+                originalPos.y + _maxStartDistance * Misc.RandomInvert,
+                originalPos.z + _maxStartDistance * Misc.RandomInvert
+                );
+            
+            tile.rotation = Quaternion.Euler(
+                originalRot.x + _maxStartRotation * Misc.RandomInvert,
+                originalRot.y + _maxStartRotation * Misc.RandomInvert,
+                originalRot.z + _maxStartRotation * Misc.RandomInvert
+                );
+            
             tile.localScale = Vector3.zero;
         
-            var startingPosition = tile.position;
-            var startingRotation = tile.rotation;
-            var startingScale = tile.localScale;
+            var startPos = tile.position;
+            var startRot = tile.rotation;
+            var startScale = tile.localScale;
 
             tile.gameObject.SetActive(true);
             while (lerpPosition < 1)
             {
-                var t = Misc.UpdateLerpPos(ref lerpPosition, _lerpSpeed, easingType: Easings.Types.SineOut);
-                tile.position = Vector3.Lerp(startingPosition, originalPosition, t);
-                tile.rotation = Quaternion.Lerp(startingRotation, originalRotation, t);
-                tile.localScale = Vector3.Lerp(startingScale, originalScale, t);
+                var t = Misc.UpdateLerpPos(ref lerpPosition, _tileTransitionTime, easingType: _tileTransitionEasing);
+                tile.position = Vector3.Lerp(startPos, originalPos, t);
+                tile.rotation = Quaternion.Lerp(startRot, originalRot, t);
+                tile.localScale = Vector3.Lerp(startScale, originalScale, t);
             
                 yield return null;
             }
@@ -124,7 +134,7 @@ namespace Core
             foreach (var tile in _tiles)
             {
                 StartCoroutine(GenerateTile(tile));
-                yield return new WaitForSeconds(_pauseLength);
+                yield return new WaitForSeconds(_timeBetweenTiles);
             }
 
             while (_generatedTiles < _tiles.Count) yield return null;
@@ -174,8 +184,8 @@ namespace Core
             SoundManager.Instance.PlaySound("NordExplosion");
             while (effectLerpPos < 1)
             {
-                var t = Misc.UpdateLerpPos(ref effectLerpPos, 0.5f, easingType: Easings.Types.SineIn);
-                lens.intensity.value = Mathf.Lerp(0, 0.25f, Easings.Ease(effectLerpPos, Easings.Types.SineOut));
+                var t = Misc.UpdateLerpPos(ref effectLerpPos, 0.5f, easingType: Easings.Type.SineIn);
+                lens.intensity.value = Mathf.Lerp(0, 0.25f, Easings.Ease(effectLerpPos, Easings.Type.SineOut));
                 fogMat.color = new Color(fogMat.color.r, fogMat.color.g, fogMat.color.b, Mathf.Lerp(startingFogAlpha, 0f, t));
                 _fog.transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, t);
                 yield return null;
@@ -194,7 +204,7 @@ namespace Core
 
             while (effectLerpPos < 1)
             {
-                var t = Misc.UpdateLerpPos(ref effectLerpPos, 0.5f, easingType: Easings.Types.SineOut);
+                var t = Misc.UpdateLerpPos(ref effectLerpPos, 0.5f, easingType: Easings.Type.SineOut);
                 lens.intensity.value = Mathf.Lerp(0.25f, -0.5f, t);
                 yield return null;
             }
@@ -202,7 +212,7 @@ namespace Core
             effectLerpPos = 0;
             while (effectLerpPos < 1)
             {
-                var t = Misc.UpdateLerpPos(ref effectLerpPos, 2, easingType: Easings.Types.SineOut);
+                var t = Misc.UpdateLerpPos(ref effectLerpPos, 2, easingType: Easings.Type.SineOut);
                 lens.intensity.value = Mathf.Lerp(-0.5f, 0f, t);
                 yield return null;
             }

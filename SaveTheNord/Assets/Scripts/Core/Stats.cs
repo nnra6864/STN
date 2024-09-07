@@ -244,7 +244,7 @@ namespace Core
             float fogA = _fogMaterial.color.a;
             while (lerpPos < 1)
             {
-                var t = Misc.UpdateLerpPos(ref lerpPos, easingType: Easings.Types.SineInOut);
+                var t = Misc.UpdateLerpPos(ref lerpPos, easingType: Easings.Type.SineInOut);
                 var a = Mathf.Lerp(fogA, 0, t);
                 _fogMaterial.color = new Color(_fogMaterial.color.r, _fogMaterial.color.g, _fogMaterial.color.b, a);
                 foreach (var rend in WaterTileRenderers)
