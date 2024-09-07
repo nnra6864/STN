@@ -32,8 +32,8 @@ namespace Core
         [SerializeField] private List<StartingPlant> _startingPlants;
         
         [Header("Generation")]
-        [SerializeField] private float _timeBetweenTiles = 0.005f;
-        [SerializeField] private float _tileTransitionTime = 1.5f;
+        [SerializeField] private float _timeBetweenTiles = 0.0025f;
+        [SerializeField] private float _tileTransitionTime = 1;
         [SerializeField] private Easings.Type _tileTransitionEasing = Easings.Type.CubicOut;
         [SerializeField] private float _maxStartDistance = 5;
         [SerializeField] private float _maxStartRotation = 360;

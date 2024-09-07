@@ -14,7 +14,7 @@ namespace Core
         public delegate void StatChanged();
 
         public static bool IsSandbox;
-        [SerializeField] Nord _nord;
+        [SerializeField] private Nord _nord;
         [SerializeField] private GameObject _planets, _fog;
         [SerializeField] private Win _win;
         [SerializeField] private PlantNumbers _vegetationGoals;

@@ -5,15 +5,19 @@ using UnityEngine;
 
 namespace Plants
 {
-    public class PlantNumbers : MonoBehaviour
+    public class PlantNumbers : NnBehaviour
     {
-        [SerializeField] private bool _isHidden;
-        [SerializeField] private RectTransform _toggleButtonArrow;
+        private bool _isHidden = true;
         private float _lerpPosition;
         private Vector2 _hiddenPosition, _shownPosition;
         private Quaternion _hiddenRotation, _shownRotation;
         private RectTransform _rect;
+        
+        [SerializeField] private RectTransform _toggleButtonArrow;
         [SerializeField] private GameObject _prefab, _content;
+        [SerializeField] private float _transitionTime = 0.75f;
+        [SerializeField] private Easings.Type _transitionEasing = Easings.Type.ExpoOut;
+        
         private void Awake()
         {
             _rect = GetComponent<RectTransform>();
@@ -32,35 +36,40 @@ namespace Plants
 
         public void ToggleUI()
         {
-            if (_toggleCoroutine != null) StopCoroutine(_toggleCoroutine);
-            _toggleCoroutine = StartCoroutine(_isHidden ? Show() : Hide());
+            StartNullRoutine(ref _toggleRoutine, _isHidden ? ShowRoutine() : HideRoutine());
             _isHidden = !_isHidden;
         }
 
-        private Coroutine _toggleCoroutine;
-        IEnumerator Show()
+        private Coroutine _toggleRoutine;
+
+        private IEnumerator ShowRoutine()
         {
             SoundManager.Instance.PlaySound("Select");
             
             while (_lerpPosition < 1)
             {
-                var t = Misc.UpdateLerpPos(ref _lerpPosition, 0.25f, easingType: Easings.Type.SineInOut);
+                var t = Misc.UpdateLerpPos(ref _lerpPosition, _transitionTime, _transitionEasing);
                 _rect.anchoredPosition = Vector2.Lerp(_hiddenPosition, _shownPosition, t);
                 _toggleButtonArrow.rotation = Quaternion.Lerp(_hiddenRotation, _shownRotation, t);
                 yield return null;
             }
+
+            _toggleRoutine = null;
         }
 
-        IEnumerator Hide()
+        private IEnumerator HideRoutine()
         {
             SoundManager.Instance.PlaySound("Select");
+            
             while (_lerpPosition > 0)
             {
-                var t = Misc.ReverseLerpPos(ref _lerpPosition, 0.25f, easingType: Easings.Type.SineInOut);
+                var t = Misc.ReverseLerpPos(ref _lerpPosition, _transitionTime, _transitionEasing);
                 _rect.anchoredPosition = Vector2.Lerp(_hiddenPosition, _shownPosition, t);
                 _toggleButtonArrow.rotation = Quaternion.Lerp(_hiddenRotation, _shownRotation, t);
                 yield return null;
             }
+
+            _toggleRoutine = null;
         }
     }
 }
