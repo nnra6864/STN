@@ -23,14 +23,19 @@ namespace MainMenu
         {
             if (_volumeProfile.TryGet<MotionBlur>(out var mb))
                 mb.intensity.value = PlayerPrefs.GetInt("MotionBlurStrength", 6) / 10f;
+            
             _audioMixer.SetFloat("MasterVolume", PlayerPrefs.GetFloat("MasterVolume"));
             _audioMixer.SetFloat("MusicVolume", PlayerPrefs.GetFloat("MusicVolume"));
             _audioMixer.SetFloat("SfxVolume", PlayerPrefs.GetFloat("SfxVolume"));
+            
             _groundMaterial.color = HexToRgba(PlayerPrefs.GetString("GroundColor", "417B38FF"), new (65, 123, 56, 255));
             _waterMaterial.color = HexToRgba(PlayerPrefs.GetString("WaterColor", "5E81ACFF"), new (94, 129, 172, 255));
+            
             SoundManager.Instance.StopSound("GameLoop");
             SoundManager.Instance.PlaySound("MenuLoop");
+            
             ShowPlanets();
+            
             SoundManager.Instance.StopSound("PlanetMoveTowards");
             SoundManager.Instance.StopSound("Select");
         }
@@ -110,22 +115,16 @@ namespace MainMenu
             Application.Quit();
         }
 
-        void ShowPlanets()
+        private void ShowPlanets()
         {
             foreach (Transform planet in transform)
-            {
-                var button = planet.GetComponent<MenuButton>();
-                button.StartCoroutine(button.Show());
-            }
+                planet.GetComponent<MenuButton>().Show();
         }
         
-        void HidePlanets()
+        private void HidePlanets()
         {
             foreach (Transform planet in transform)
-            {
-                var button = planet.GetComponent<MenuButton>();
-                button.StartCoroutine(button.Hide());
-            }
+                planet.GetComponent<MenuButton>().Hide();
         }
 
         IEnumerator ShowUI(GameObject ui)

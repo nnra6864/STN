@@ -1,105 +1,134 @@
 using System.Collections;
-using System.Collections.Generic;
 using NnUtils.Scripts;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace MainMenu
 {
-    public class MenuButton : MonoBehaviour, IPlanetButton
+    public class MenuButton : NnBehaviour, IPlanetButton
     {
-        [SerializeField] private float _lerpLength;
-        public Vector3 StartingPosition;
-        [SerializeField] private Vector3 _moveAmount;
-        private Vector3 _targetPosition;
-        public Quaternion StartingRotation;
-        [SerializeField] private Vector3 _rotationAmount;
-        private Quaternion _targetRotation;
-        public Vector3 StartingScale;
-        [SerializeField] private Vector3 _scaleAmount;
-        private Vector3 _targetScale;
-        private float _lerpPosition;
+        private Vector3 _startPos;
+        private Vector3 _targetPos;
+
+        private Quaternion _startRot;
+        private Quaternion _targetRot;
+        
         [SerializeField] private UnityEvent _onClick;
+        
+        [SerializeField] private float _moveTime = 1;
+        [SerializeField] private Easings.Type _moveEasing = Easings.Type.ExpoInOut;
+        
+        [SerializeField] private Vector3 _moveAmount;
+        [SerializeField] private Vector3 _rotationAmount;
+        [SerializeField] private Vector3 _scaleAmount;
 
         private void Awake()
         {
-            _lerpPosition = 0;
-            StartingPosition = transform.position;
-            _targetPosition = StartingPosition + _moveAmount;
-            StartingRotation = transform.rotation;
-            _targetRotation = Quaternion.Euler(StartingRotation.eulerAngles + _rotationAmount);
-            StartingScale = transform.localScale;
-            _targetScale = StartingScale + _scaleAmount;
+            _startPos = transform.position;
+            _targetPos = _startPos + _moveAmount;
+            _startRot = transform.rotation;
+            _targetRot = Quaternion.Euler(_startRot.eulerAngles + _rotationAmount);
         }
 
         public void MouseEnter()
         {
-            if (_moveAway != null) StopCoroutine(_moveAway);
-            _moveTowards = StartCoroutine(MoveTowards());
+            if (_moveAwayRoutine != null) StopCoroutine(_moveAwayRoutine);
+            _moveTowardsRoutine = StartCoroutine(MoveTowardsRoutine());
         }
 
         public void MouseLeave()
         {
-            if (_moveTowards != null) StopCoroutine(_moveTowards);
-            _moveAway = StartCoroutine(MoveAway());
+            if (_moveTowardsRoutine != null) StopCoroutine(_moveTowardsRoutine);
+            _moveAwayRoutine = StartCoroutine(MoveAwayRoutine());
         }
 
-        public void Click()
-        {
-            _onClick?.Invoke();
-        }
+        public void Click() => _onClick?.Invoke();
 
-        private Coroutine _moveTowards;
-        private Coroutine _moveAway;
 
-        private IEnumerator MoveTowards()
+        private Coroutine _moveTowardsRoutine;
+        private IEnumerator MoveTowardsRoutine()
         {
             SoundManager.Instance.PlaySound("PlanetMoveTowards");
-            while (_lerpPosition < 1)
+            
+            var startPos = transform.localPosition;
+            var targetPos = _targetPos;
+            var startRot = transform.localRotation;
+            var targetRot = _targetRot;
+
+            float lerpPos = 0;
+            while (lerpPos < 1)
             {
-                var t = Misc.Tween(ref _lerpPosition, 0.5f, easingType: Easings.Type.QuadInOut);
-                transform.position = Vector3.Lerp(StartingPosition, _targetPosition, t);
-                transform.rotation = Quaternion.Lerp(StartingRotation, _targetRotation, t);
+                var t = Misc.Tween(ref lerpPos, _moveTime, _moveEasing);
+                transform.position = Vector3.Lerp(startPos, targetPos, t);
+                transform.rotation = Quaternion.Lerp(startRot, targetRot, t);
                 yield return new WaitForEndOfFrame();
             }
         }
         
-        private IEnumerator MoveAway()
+        private Coroutine _moveAwayRoutine;
+        private IEnumerator MoveAwayRoutine()
         {
             SoundManager.Instance.PlaySound("PlanetMoveAway");
-            while (_lerpPosition > 0)
+
+            var startPos = transform.localPosition;
+            var targetPos = _startPos;
+            var startRot = transform.localRotation;
+            var targetRot = _startRot;
+
+            float lerpPos = 0;
+            while (lerpPos < 1)
             {
-                var t = Misc.ReverseTween(ref _lerpPosition, 0.5f, easingType: Easings.Type.QuadInOut);
-                transform.position = Vector3.Lerp(StartingPosition, _targetPosition, t);
-                transform.rotation = Quaternion.Lerp(StartingRotation, _targetRotation, t);
+                var t = Misc.Tween(ref lerpPos, _moveTime, _moveEasing);
+                transform.position = Vector3.Lerp(startPos, targetPos, t);
+                transform.rotation = Quaternion.Lerp(startRot, targetRot, t);
                 yield return new WaitForEndOfFrame();
             }
         }
 
-        public IEnumerator Hide()
+        public void Hide()
+        {
+            StopRoutine(ref _showRoutine);
+            RestartRoutine(ref _hideRoutine, HideRoutine());
+        }
+
+        private Coroutine _hideRoutine;
+        private IEnumerator HideRoutine()
         {
             SoundManager.Instance.PlaySound("PlanetMoveAway");
             GetComponent<SphereCollider>().enabled = false;
-            float hideLerpPosition = 0;
-            while (hideLerpPosition < 1)
+            
+            float lerpPos = 0;
+            while (lerpPos < 1)
             {
-                var t = Misc.Tween(ref hideLerpPosition, 0.5f, easingType: Easings.Type.QuadInOut);
-                transform.localScale = Vector3.Lerp(StartingScale, Vector3.zero, t);
-                yield return new WaitForEndOfFrame();
+                var t = Misc.Tween(ref lerpPos, 0.5f, easingType: Easings.Type.QuadInOut);
+                transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, t);
+                yield return null;
             }
+            
+            _hideRoutine = null;
         }
         
-        public IEnumerator Show()
+        public void Show()
+        {
+            StopRoutine(ref _hideRoutine);
+            RestartRoutine(ref _showRoutine, ShowRoutine());
+        }
+        
+        private Coroutine _showRoutine;
+        private IEnumerator ShowRoutine()
         {
             SoundManager.Instance.PlaySound("PlanetMoveTowards");
-            float hideLerpPosition = 0;
-            while (hideLerpPosition < 1)
+            
+            float lerpPos = 0;
+            while (lerpPos < 1)
             {
-                var t = Misc.Tween(ref hideLerpPosition, 0.5f, easingType: Easings.Type.QuadInOut);
-                transform.localScale = Vector3.Lerp(Vector3.zero, StartingScale, t);
+                var t = Misc.Tween(ref lerpPos, 0.5f, easingType: Easings.Type.QuadInOut);
+                transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
                 yield return new WaitForEndOfFrame();
             }
+            
             GetComponent<SphereCollider>().enabled = true;
+            _showRoutine = null;
         }
     }
 }
