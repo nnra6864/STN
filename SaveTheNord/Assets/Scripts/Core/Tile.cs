@@ -35,6 +35,23 @@ namespace Core
             if (Stats.SelectedTile != this)
                 FadeToColor(_color);
         }
+
+        public void MouseDown()
+        {
+        }
+
+        public void MouseUp()
+        {
+        }
+
+        public void MouseDownRight()
+        {
+        }
+
+        public void MouseUpRight()
+        {
+        }
+
         public void Click()
         {
             if (TileType == TileTypes.Water)
