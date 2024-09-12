@@ -17,7 +17,7 @@ namespace MainMenu
         [SerializeField] private GameObject _settings, _guideButton;
         [SerializeField] private GameObject _settingsScaler, _guideScaler;
         [SerializeField] private Material _groundMaterial, _waterMaterial;
-        static MenuButton _selectedButton;
+        private static MenuButton _selectedButton;
 
         private void Start()
         {

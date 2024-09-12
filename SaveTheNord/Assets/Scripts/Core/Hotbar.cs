@@ -66,7 +66,7 @@ namespace Core
             _waterPurifierAmount.text = $"{_waterPurifier.Amount}";
             _waterPurifier.OnAmountChanged += UpdateAmount;
             OnWorkersCountChanged += UpdateAmount;
-            WorkersCount = Stats.IsSandbox ? 69420 : 0;
+            WorkersCount = Stats.IsSandbox ? 999999 : 0;
         }
 
         private void OnDestroy()
