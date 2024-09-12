@@ -52,7 +52,7 @@ namespace Core
             
             while (lerpPosition < 1)
             {
-                var t = Misc.UpdateLerpPos(ref lerpPosition, 0.5f, easingType: Easings.Type.QuadInOut);
+                var t = Misc.Tween(ref lerpPosition, 0.5f, easingType: Easings.Type.QuadInOut);
                 Scaler.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
                 yield return new WaitForEndOfFrame();
             }

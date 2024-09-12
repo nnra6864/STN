@@ -43,8 +43,8 @@ namespace Plants
             SoundManager.Instance.PlaySound("Select");
 
             Func<float> lerp = _isHidden 
-                ? () => Misc.ReverseLerpPos(ref _lerpPos, _transitionTime, _transitionEasing)
-                : () => Misc.UpdateLerpPos(ref _lerpPos, _transitionTime, _transitionEasing); 
+                ? () => Misc.ReverseTween(ref _lerpPos, _transitionTime, _transitionEasing)
+                : () => Misc.Tween(ref _lerpPos, _transitionTime, _transitionEasing); 
             
             while (_isHidden ? _lerpPos > 0 : _lerpPos < 1)
             {

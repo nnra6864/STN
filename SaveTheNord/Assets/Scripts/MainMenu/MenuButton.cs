@@ -57,7 +57,7 @@ namespace MainMenu
             SoundManager.Instance.PlaySound("PlanetMoveTowards");
             while (_lerpPosition < 1)
             {
-                var t = Misc.UpdateLerpPos(ref _lerpPosition, 0.5f, easingType: Easings.Type.QuadInOut);
+                var t = Misc.Tween(ref _lerpPosition, 0.5f, easingType: Easings.Type.QuadInOut);
                 transform.position = Vector3.Lerp(StartingPosition, _targetPosition, t);
                 transform.rotation = Quaternion.Lerp(StartingRotation, _targetRotation, t);
                 yield return new WaitForEndOfFrame();
@@ -69,7 +69,7 @@ namespace MainMenu
             SoundManager.Instance.PlaySound("PlanetMoveAway");
             while (_lerpPosition > 0)
             {
-                var t = Misc.ReverseLerpPos(ref _lerpPosition, 0.5f, easingType: Easings.Type.QuadInOut);
+                var t = Misc.ReverseTween(ref _lerpPosition, 0.5f, easingType: Easings.Type.QuadInOut);
                 transform.position = Vector3.Lerp(StartingPosition, _targetPosition, t);
                 transform.rotation = Quaternion.Lerp(StartingRotation, _targetRotation, t);
                 yield return new WaitForEndOfFrame();
@@ -83,7 +83,7 @@ namespace MainMenu
             float hideLerpPosition = 0;
             while (hideLerpPosition < 1)
             {
-                var t = Misc.UpdateLerpPos(ref hideLerpPosition, 0.5f, easingType: Easings.Type.QuadInOut);
+                var t = Misc.Tween(ref hideLerpPosition, 0.5f, easingType: Easings.Type.QuadInOut);
                 transform.localScale = Vector3.Lerp(StartingScale, Vector3.zero, t);
                 yield return new WaitForEndOfFrame();
             }
@@ -95,7 +95,7 @@ namespace MainMenu
             float hideLerpPosition = 0;
             while (hideLerpPosition < 1)
             {
-                var t = Misc.UpdateLerpPos(ref hideLerpPosition, 0.5f, easingType: Easings.Type.QuadInOut);
+                var t = Misc.Tween(ref hideLerpPosition, 0.5f, easingType: Easings.Type.QuadInOut);
                 transform.localScale = Vector3.Lerp(Vector3.zero, StartingScale, t);
                 yield return new WaitForEndOfFrame();
             }

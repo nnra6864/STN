@@ -54,7 +54,7 @@ namespace Plants
             
             while (lerpPos > 0)
             {
-                var t = Misc.ReverseLerpPos(ref lerpPos, 0.5f, easingType: Easings.Type.CubicInOut);
+                var t = Misc.ReverseTween(ref lerpPos, 0.5f, easingType: Easings.Type.CubicInOut);
                 rt.anchoredPosition = Vector2.Lerp(Vector2.zero, Vector2.up * 100, t);
                 yield return null;
             }
@@ -63,7 +63,7 @@ namespace Plants
             
             while (lerpPos < 1)
             {
-                var t = Misc.UpdateLerpPos(ref lerpPos, 0.5f, easingType: Easings.Type.CubicInOut);
+                var t = Misc.Tween(ref lerpPos, 0.5f, easingType: Easings.Type.CubicInOut);
                 rt.anchoredPosition = Vector2.Lerp(Vector2.zero, Vector2.up * 100, t);
                 yield return null;
             }

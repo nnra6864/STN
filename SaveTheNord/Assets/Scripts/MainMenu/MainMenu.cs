@@ -136,7 +136,7 @@ namespace MainMenu
             
             while (lerpPosition < 1)
             {
-                var t = Misc.UpdateLerpPos(ref lerpPosition, 0.5f, easingType: Easings.Type.QuadInOut);
+                var t = Misc.Tween(ref lerpPosition, 0.5f, easingType: Easings.Type.QuadInOut);
                 ui.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
                 yield return null;
             }
@@ -149,7 +149,7 @@ namespace MainMenu
             
             while (lerpPosition < 1)
             {
-                var t = Misc.UpdateLerpPos(ref lerpPosition, 0.5f, easingType: Easings.Type.QuadInOut);
+                var t = Misc.Tween(ref lerpPosition, 0.5f, easingType: Easings.Type.QuadInOut);
                 ui.transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, t);
                 yield return null;
             }

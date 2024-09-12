@@ -244,7 +244,7 @@ namespace Core
             float fogA = _fogMaterial.color.a;
             while (lerpPos < 1)
             {
-                var t = Misc.UpdateLerpPos(ref lerpPos, easingType: Easings.Type.SineInOut);
+                var t = Misc.Tween(ref lerpPos, easingType: Easings.Type.SineInOut);
                 var a = Mathf.Lerp(fogA, 0, t);
                 _fogMaterial.color = new Color(_fogMaterial.color.r, _fogMaterial.color.g, _fogMaterial.color.b, a);
                 foreach (var rend in WaterTileRenderers)
@@ -282,14 +282,14 @@ namespace Core
             AverageWaterPollution = HighestWaterPollution = WaterPollutionLevel = Random.Range(10, 30);
             PollutionLevel = (AirPollutionLevel + WaterPollutionLevel) / 2f;
             OnMoneyChanged = null;
-            _money = IsSandbox ? 69420 : Random.Range(0, 25);
+            _money = IsSandbox ? 999999 : Random.Range(0, 25);
             SelectedInfo = SelectedObject = null;
             OnNordExploded = null;
             
             foreach (var item in _resetItemAmounts)
             {
                 item.OnAmountChanged = null;
-                item.Amount = IsSandbox ? 69420 : 0;
+                item.Amount = IsSandbox ? 999999 : 0;
             }
             
             PlantNumbers = new()

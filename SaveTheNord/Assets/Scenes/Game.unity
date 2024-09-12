@@ -755,7 +755,7 @@ GameObject:
   - component: {fileID: 93876904}
   - component: {fileID: 93876903}
   m_Layer: 0
-  m_Name: Global Volume
+  m_Name: GlobalVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6144,6 +6144,60 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 690019338}
   m_CullTransparentMesh: 1
+--- !u!1 &694350280
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 694350281}
+  - component: {fileID: 694350282}
+  m_Layer: 0
+  m_Name: CameraOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &694350281
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 694350280}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 963194228}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &694350282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 694350280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ed43473aa026aeb394275528cd5c5fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _origin: {fileID: 694350281}
+  _camera: {fileID: 963194228}
+  _sensitivity: 2
+  _zoomSensitivity: 30
+  _zoomMinMax: {x: -50, y: -15}
+  _rotateTime: 1
+  _rotateEasing: 16
+  _zoomTime: 1
+  _zoomEasing: 16
 --- !u!1 &699407479
 GameObject:
   m_ObjectHideFlags: 0
@@ -12770,9 +12824,8 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
-  - component: {fileID: 963194230}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: MainCamera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12845,14 +12898,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 600576461}
   - {fileID: 2146549715}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 694350281}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
@@ -12898,22 +12951,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!114 &963194230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59e1846849e59e34ba13b3dbc43a5893, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _sensitivity: 0.5
-  _zoomSensitivity: 10
-  _zoomMin: -50
-  _zoomMax: -15
 --- !u!1 &983905857
 GameObject:
   m_ObjectHideFlags: 0
@@ -23976,10 +24013,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42541dfcdddd8a547a9856814788255e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isHidden: 1
   _toggleButtonArrow: {fileID: 784239504}
   _prefab: {fileID: 7083008765950375201, guid: 726aef789b90f18409b7f541949ed984, type: 3}
   _content: {fileID: 704751360}
+  _transitionTime: 0.75
+  _transitionEasing: 16
 --- !u!1 &1547887982
 GameObject:
   m_ObjectHideFlags: 0
@@ -26762,7 +26800,7 @@ SceneRoots:
   - {fileID: 289900984}
   - {fileID: 244842709}
   - {fileID: 93876904}
-  - {fileID: 963194228}
+  - {fileID: 694350281}
   - {fileID: 1370842794}
   - {fileID: 794351599}
   - {fileID: 752257953}

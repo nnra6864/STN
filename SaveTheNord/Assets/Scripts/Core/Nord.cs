@@ -107,7 +107,7 @@ namespace Core
             tile.gameObject.SetActive(true);
             while (lerpPosition < 1)
             {
-                var t = Misc.UpdateLerpPos(ref lerpPosition, _tileTransitionTime, easingType: _tileTransitionEasing);
+                var t = Misc.Tween(ref lerpPosition, _tileTransitionTime, easingType: _tileTransitionEasing);
                 tile.position = Vector3.Lerp(startPos, originalPos, t);
                 tile.rotation = Quaternion.Lerp(startRot, originalRot, t);
                 tile.localScale = Vector3.Lerp(startScale, originalScale, t);
@@ -184,7 +184,7 @@ namespace Core
             SoundManager.Instance.PlaySound("NordExplosion");
             while (effectLerpPos < 1)
             {
-                var t = Misc.UpdateLerpPos(ref effectLerpPos, 0.5f, easingType: Easings.Type.SineIn);
+                var t = Misc.Tween(ref effectLerpPos, 0.5f, easingType: Easings.Type.SineIn);
                 lens.intensity.value = Mathf.Lerp(0, 0.25f, Easings.Ease(effectLerpPos, Easings.Type.SineOut));
                 fogMat.color = new Color(fogMat.color.r, fogMat.color.g, fogMat.color.b, Mathf.Lerp(startingFogAlpha, 0f, t));
                 _fog.transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, t);
@@ -204,7 +204,7 @@ namespace Core
 
             while (effectLerpPos < 1)
             {
-                var t = Misc.UpdateLerpPos(ref effectLerpPos, 0.5f, easingType: Easings.Type.SineOut);
+                var t = Misc.Tween(ref effectLerpPos, 0.5f, easingType: Easings.Type.SineOut);
                 lens.intensity.value = Mathf.Lerp(0.25f, -0.5f, t);
                 yield return null;
             }
@@ -212,7 +212,7 @@ namespace Core
             effectLerpPos = 0;
             while (effectLerpPos < 1)
             {
-                var t = Misc.UpdateLerpPos(ref effectLerpPos, 2, easingType: Easings.Type.SineOut);
+                var t = Misc.Tween(ref effectLerpPos, 2, easingType: Easings.Type.SineOut);
                 lens.intensity.value = Mathf.Lerp(-0.5f, 0f, t);
                 yield return null;
             }
